@@ -14,6 +14,15 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello world!')
 })
 
+// Route not found handler
+
+app.all('*', (req: Request, res: Response) => {
+  res.status(400).json({
+    success: false,
+    message: `${req.path} Route is not found`,
+  })
+})
+
 // Global error handler
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   console.log(error)
