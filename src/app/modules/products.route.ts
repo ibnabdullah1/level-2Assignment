@@ -5,7 +5,7 @@ const router = express.Router()
 //Create a new Product
 router.post('/', ProductControllers.createProducts)
 // Get a list of products
-router.get('/', ProductControllers.getAllProducts)
+router.get('/', ProductControllers.searchProducts)
 // Get a single product
 router.get('/:id', ProductControllers.getSingleProduct)
 // Update a single product

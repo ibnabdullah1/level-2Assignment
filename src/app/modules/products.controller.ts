@@ -20,24 +20,42 @@ const createProducts = async (req: Request, res: Response) => {
     })
   }
 }
-
-const getAllProducts = async (req: Request, res: Response) => {
-  try {
-    const result = await ProductServices.getAllProducts()
-
-    res.status(200).json({
-      success: true,
-      message: 'Products fetched successfully!',
-      data: result,
-    })
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Something went wrong',
-      error: err,
-    })
+const searchProducts = async (req: Request, res: Response) => {
+  const { searchTerm } = req.query
+  console.log({ searchTerm })
+  if (!searchTerm) {
+    return res
+      .status(400)
+      .json({ success: false, message: 'Search term is required' })
   }
+
+  const products = await ProductServices.allProductsQuery(searchTerm as string)
+  res.status(200).json({
+    success: true,
+    message: searchTerm
+      ? `Products matching search term '${searchTerm}' fetched successfully!`
+      : 'All products fetched successfully!',
+    data: products,
+  })
 }
+
+// const getAllProducts = async (req: Request, res: Response) => {
+//   try {
+//     const result = await ProductServices.allProductsQuery()
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Products fetched successfully!',
+//       data: result,
+//     })
+//   } catch (err: any) {
+//     res.status(500).json({
+//       success: false,
+//       message: err.message || 'Something went wrong',
+//       error: err,
+//     })
+//   }
+// }
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const id = req.params.id
@@ -113,8 +131,8 @@ const updateSingleProduct = async (req: Request, res: Response) => {
 
 export const ProductControllers = {
   createProducts,
-  getAllProducts,
   deleteProduct,
   getSingleProduct,
   updateSingleProduct,
+  searchProducts,
 }
