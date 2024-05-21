@@ -5,7 +5,8 @@ import ProductUpdateValidationSchema from './product.update.validation'
 const createProducts = async (req: Request, res: Response) => {
   try {
     const products = await req.body
-    const result = await ProductServices.createProduct(products)
+    const zodParseProductData = ProductUpdateValidationSchema.parse(products)
+    const result = await ProductServices.createProduct(zodParseProductData)
 
     res.status(200).json({
       success: true,
