@@ -12,8 +12,12 @@ const createProducts = async (req: Request, res: Response) => {
       message: 'Product created successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: err,
+    })
   }
 }
 
@@ -26,8 +30,12 @@ const getAllProducts = async (req: Request, res: Response) => {
       message: 'Products fetched successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: err,
+    })
   }
 }
 const deleteProduct = async (req: Request, res: Response) => {
@@ -47,8 +55,12 @@ const deleteProduct = async (req: Request, res: Response) => {
       message: 'Products deleted  successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: err,
+    })
   }
 }
 const getSingleProduct = async (req: Request, res: Response) => {
@@ -64,16 +76,39 @@ const getSingleProduct = async (req: Request, res: Response) => {
     }
     res.status(200).json({
       success: true,
-      message: 'Products deleted  successfully!',
+      message: 'Products fetched successfully!',
       data: result,
     })
-  } catch (err) {
-    console.log(err)
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: err,
+    })
   }
 }
-const updateProduct = async (req: Request, res: Response) => {
+
+const updateSingleProduct = async (req: Request, res: Response) => {
+  const productId = req.params.productId
   const updateReqData = req.body
-  const zodParseData = ProductUpdateValidationSchema.parse(updateReqData)
+
+  const zodParseUpdateProductData =
+    ProductUpdateValidationSchema.parse(updateReqData)
+  const updatedProduct = await ProductServices.updateSingleProduct(
+    { _id: productId },
+    zodParseUpdateProductData,
+  )
+  if (!updatedProduct) {
+    return res.status(404).json({
+      success: false,
+      message: 'Product not found!',
+    })
+  }
+  res.status(200).json({
+    success: true,
+    message: 'Product updated successfully!',
+    data: updatedProduct,
+  })
 }
 
 export const ProductControllers = {
@@ -81,5 +116,5 @@ export const ProductControllers = {
   getAllProducts,
   deleteProduct,
   getSingleProduct,
-  updateProduct,
+  updateSingleProduct,
 }

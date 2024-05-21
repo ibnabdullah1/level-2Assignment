@@ -13,7 +13,7 @@ const InventoryUpdateValidationSchema = z.object({
 const ProductUpdateValidationSchema = z.object({
   name: z.string(),
   description: z.string(),
-  price: z.number(),
+  price: z.number({ message: 'Price must be a non-negative number' }),
   category: z.string(),
   tags: z.array(z.string()),
   variants: z.array(VariantUpdateValidationSchema),
