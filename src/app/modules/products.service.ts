@@ -52,12 +52,16 @@ const deleteProduct = async (filter: { _id: string }) => {
   const result = await Product.deleteOne(filter)
   return result
 }
-//  Create a new Product
-const createOrder = async (OrderData: TOrder) => {
-  const result = await Order.create(OrderData)
-  return result
-}
 
+const updateProductQuantity = async (productId: string, quantity: number) => {
+  return await Product.findByIdAndUpdate(
+    productId,
+    {
+      $inc: { 'inventory.quantity': -quantity },
+    },
+    { new: true },
+  )
+}
 export const ProductServices = {
   createProduct,
   getSingleProductCheckOrder,
@@ -65,5 +69,5 @@ export const ProductServices = {
   deleteProduct,
   updateSingleProduct,
   allProductsQuery,
-  createOrder,
+  updateProductQuantity,
 }
