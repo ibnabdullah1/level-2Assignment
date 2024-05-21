@@ -1,14 +1,16 @@
+import { TOrder } from './order.interface'
+import { Order } from './order.model'
 import { TProducts } from './products.interface'
 import { Product } from './products.model'
 
 //  Create a new Product
-const createProduct = async (studentData: TProducts) => {
-  const result = await Product.create(studentData)
+const createProduct = async (ProductData: TProducts) => {
+  const result = await Product.create(ProductData)
   return result
 }
 
 //  Search for products
-const allProductsQuery = (searchTerm?: string) => {
+const allProductsQuery = (searchTerm?: string | undefined) => {
   if (!searchTerm) {
     return Product.find()
   } else {
@@ -16,7 +18,6 @@ const allProductsQuery = (searchTerm?: string) => {
       $or: [
         { name: { $regex: searchTerm, $options: 'i' } },
         { description: { $regex: searchTerm, $options: 'i' } },
-        { tags: { $in: [searchTerm] } },
       ],
     })
   }
@@ -27,12 +28,16 @@ const allProductsQuery = (searchTerm?: string) => {
 //   const result = await Product.find()
 //   return result
 // }
+
 // Get a single product
 const getSingleProduct = async (filter: { _id: string }) => {
   const result = await Product.findOne(filter)
   return result
 }
-
+// Order product id checked
+const getSingleProductCheckOrder = async (productId: string) => {
+  return await Product.findById(productId)
+}
 // Single product update
 const updateSingleProduct = async (filter: { _id: string }, data: object) => {
   const result = await Product.findByIdAndUpdate(filter._id, data, {
@@ -47,12 +52,18 @@ const deleteProduct = async (filter: { _id: string }) => {
   const result = await Product.deleteOne(filter)
   return result
 }
+//  Create a new Product
+const createOrder = async (OrderData: TOrder) => {
+  const result = await Order.create(OrderData)
+  return result
+}
 
 export const ProductServices = {
   createProduct,
-  //   getAllProducts,
+  getSingleProductCheckOrder,
   getSingleProduct,
   deleteProduct,
   updateSingleProduct,
   allProductsQuery,
+  createOrder,
 }

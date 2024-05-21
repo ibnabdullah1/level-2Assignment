@@ -1,6 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import { StudentRoutes } from './app/modules/products.route'
+import { OrderRoutes } from './app/modules/order.route'
 const app: Application = express()
 
 // Middleware function for parsing JSON bodies
@@ -9,6 +10,7 @@ app.use(cors())
 
 // Application Routes
 app.use('/api/products', StudentRoutes)
+app.use('/api/orders', OrderRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello world!')
