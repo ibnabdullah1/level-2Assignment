@@ -22,14 +22,16 @@ const createProducts = async (req: Request, res: Response) => {
 }
 const searchProducts = async (req: Request, res: Response) => {
   const { searchTerm } = req.query
-  console.log({ searchTerm })
-  if (!searchTerm) {
-    return res
-      .status(400)
-      .json({ success: false, message: 'Search term is required' })
-  }
-
   const products = await ProductServices.allProductsQuery(searchTerm as string)
+  if (products.length === 0) {
+    return res.status(404).json({
+      success: false,
+      message: searchTerm
+        ? `No products found matching search term '${searchTerm}'`
+        : 'No products found',
+      data: [],
+    })
+  }
   res.status(200).json({
     success: true,
     message: searchTerm
