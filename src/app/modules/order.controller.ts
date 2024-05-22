@@ -33,10 +33,11 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully!',
       data: result,
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const error = err as Error
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
+      message: error.message || 'Something went wrong',
       error: err,
     })
   }
@@ -58,7 +59,12 @@ const getAllOrder = async (req: Request, res: Response) => {
         data: orders,
       })
     }
-  } catch (err) {}
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: 'Something went wrong',
+    })
+  }
 }
 
 export const OrderControllers = {

@@ -1,5 +1,3 @@
-import { TOrder } from './order.interface'
-import { Order } from './order.model'
 import { TProducts } from './products.interface'
 import { Product } from './products.model'
 

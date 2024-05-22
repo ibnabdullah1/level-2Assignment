@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from 'express'
+import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
 import { StudentRoutes } from './app/modules/products.route'
 import { OrderRoutes } from './app/modules/order.route'
@@ -26,9 +26,9 @@ app.all('*', (req: Request, res: Response) => {
 })
 
 // Global error handler
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(error)
-  if (error) {
+app.use((error: unknown, req: Request, res: Response) => {
+  const err = error as Error
+  if (err) {
     res.status(400).json({ success: false, message: 'Something went wrong' })
   }
 })

@@ -13,10 +13,11 @@ const createProducts = async (req: Request, res: Response) => {
       message: 'Product created successfully!',
       data: result,
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const error = err as Error
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
+      message: error.message || 'Something went wrong',
       error: err,
     })
   }
@@ -62,7 +63,6 @@ const searchProducts = async (req: Request, res: Response) => {
 const deleteProduct = async (req: Request, res: Response) => {
   try {
     const id = req.params.id
-    console.log(id)
     const result = await ProductServices.deleteProduct({ _id: id })
 
     if (result.deletedCount === 0) {
@@ -76,10 +76,11 @@ const deleteProduct = async (req: Request, res: Response) => {
       message: 'Products deleted  successfully!',
       data: result,
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const error = err as Error
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
+      message: error.message || 'Something went wrong',
       error: err,
     })
   }
@@ -100,10 +101,11 @@ const getSingleProduct = async (req: Request, res: Response) => {
       message: 'Products fetched successfully!',
       data: result,
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const error = err as Error
     res.status(500).json({
       success: false,
-      message: err.message || 'Something went wrong',
+      message: error.message || 'Something went wrong',
       error: err,
     })
   }
