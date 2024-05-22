@@ -51,11 +51,16 @@ const deleteProduct = async (filter: { _id: string }) => {
   return result
 }
 
-const updateProductQuantity = async (productId: string, quantity: number) => {
+const updateProductQuantity = async (
+  productId: string,
+  quantity: number,
+  inStock?: boolean,
+) => {
   return await Product.findByIdAndUpdate(
     productId,
+
     {
-      $inc: { 'inventory.quantity': -quantity },
+      $set: { 'inventory.quantity': quantity, 'inventory.inStock': inStock },
     },
     { new: true },
   )

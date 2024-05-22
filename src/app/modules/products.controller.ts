@@ -74,7 +74,7 @@ const deleteProduct = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Products deleted  successfully!',
-      data: result,
+      data: result.deletedCount === 1 && null,
     })
   } catch (err: unknown) {
     const error = err as Error
