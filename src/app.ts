@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
-import { StudentRoutes } from './app/modules/products.route'
-import { OrderRoutes } from './app/modules/order.route'
+import { StudentRoutes } from './app/modules/Product/products.route'
+import { OrderRoutes } from './app/modules/Order/order.route'
 const app: Application = express()
 
 // Middleware function for parsing JSON bodies
@@ -28,7 +28,6 @@ app.all('*', (req: Request, res: Response) => {
 // Global error handler
 app.use((error: unknown, req: Request, res: Response) => {
   const err = error as Error
-  console.log(err)
   if (err) {
     res.status(400).json({ success: false, message: 'Something went wrong' })
   }
