@@ -22,21 +22,14 @@ const createOrder = async (req: Request, res: Response) => {
     const productQuantity = isProduct?.inventory?.quantity ?? 0
     const currentQuantity = productQuantity - orderQuantity
 
-    if (currentQuantity === 0) {
-      const result = await OrderServices.createOrder(zodParseOrderData)
-      await ProductServices.updateProductQuantity(
-        order.productId,
-        currentQuantity,
-        false,
-      )
-      return res.status(200).json({
-        success: true,
-        message: 'Order created successfully!',
-        data: result,
+    if (productQuantity === 0) {
+      await ProductServices.updateProductQuantity(order.productId, 0, false)
+      return res.status(400).json({
+        success: false,
+        message: 'Insufficient quantity available in inventory',
       })
     }
-
-    if (orderQuantity > productQuantity || productQuantity === 0) {
+    if (orderQuantity > productQuantity) {
       return res.status(400).json({
         success: false,
         message: 'Insufficient quantity available in inventory',
