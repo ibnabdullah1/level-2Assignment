@@ -1,7 +1,3 @@
-Here is a README file tailored to your project setup:
-
----
-
 # E-commerce Application
 
 This is an E-commerce application built with Node.js, Express, TypeScript, Mongoose, MongoDB, Zod, and Validator for validation. The application allows for managing products and orders.
